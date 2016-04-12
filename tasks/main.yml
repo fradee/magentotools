@@ -1,0 +1,17 @@
+---
+- name: Install magerun
+  become: yes
+  get_url: url=https://files.magerun.net/n98-magerun.phar dest=/usr/local/bin/magerun mode=0755
+  when: magentotools_install_magerun
+
+- name: Install modman
+  become: yes
+  get_url: url=https://raw.githubusercontent.com/colinmollenhour/modman/master/modman dest=/usr/local/bin/modman mode=0755
+  when: magentotools_install_modman
+
+- name: Install composer
+  become: yes
+  shell: >
+    curl -sS https://getcomposer.org/installer | php
+    creates=/usr/local/bin/composer
+  when: magentotools_install_composer
