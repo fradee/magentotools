@@ -1,0 +1,13 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: "Alexander Fradynskyi"
+  company: GoodAhead
+  license: BSD
+  min_ansible_version: 0.1
+  issue_tracker_uri: https://github.com/fradee/magentotools/issues
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
