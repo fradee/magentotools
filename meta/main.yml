@@ -11,7 +11,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-galaxy_tags:
-  - general
-  - web
-  - tools
+  galaxy_tags:
+    - general
+    - web
+    - tools
