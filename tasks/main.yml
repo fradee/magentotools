@@ -15,3 +15,24 @@
     curl -sS https://getcomposer.org/installer | php
     creates=/usr/local/bin/composer
   when: magentotools_install_composer
+
+- name: Download IonCube
+  become: yes
+  unarchive: src=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest=/usr/local/bin copy=no
+  when: magentotools_install_ioncube
+- name: Set up ioncube in php5-fpm
+  template:
+    src: 20-ioncube.j2
+    dest: "/etc/php5/fpm/conf.d/20-ioncube.ini"
+    mode: 0775
+  when: magentotools_install_ioncube
+  notify:
+    - restart php-fpm
+- name: Set up ioncube in php5-cli
+  template:
+    src: 20-ioncube.j2
+    dest: "/etc/php5/cli/conf.d/20-ioncube.ini"
+    mode: 0775
+  when: magentotools_install_ioncube
+  notify:
+    - restart nginx
