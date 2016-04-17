@@ -9,30 +9,47 @@
   get_url: url=https://raw.githubusercontent.com/colinmollenhour/modman/master/modman dest=/usr/local/bin/modman mode=0755
   when: magentotools_install_modman
 
-- name: Install composer
+- name: Download Composer installer
   become: yes
-  shell: >
-    curl -sS https://getcomposer.org/installer | php
-    creates=/usr/local/bin/composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-installer.php
+    mode: 0755
+  when: magentotools_install_composer
+
+- name: Install  Composer
+  become: yes
+  command: php /tmp/composer-installer.php --install
+  when: magentotools_install_composer
+
+- name: Move composer
+  become: yes
+  shell: mv composer.phar /usr/local/bin/composer
   when: magentotools_install_composer
 
 - name: Download IonCube
   become: yes
-  unarchive: src=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest=/usr/local/bin copy=no
+  get_url: url=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest=/tmp mode=0755
   when: magentotools_install_ioncube
-- name: Set up ioncube in php5-fpm
+
+- name: Unarchive IonCube
+  become: yes
+  unarchive: src=/tmp/ioncube_loaders_lin_x86-64.tar.gz dest=/usr/local/bin copy=no
+  when: magentotools_install_ioncube
+
+- name: Set up IonCube in php5-fpm
   template:
     src: 20-ioncube.j2
-    dest: "/etc/php5/fpm/conf.d/20-ioncube.ini"
+    dest: "/etc/php5/fpm/conf.d/10-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube
   notify:
     - restart php-fpm
-- name: Set up ioncube in php5-cli
+- name: Set up IonCube in php5-cli
   template:
     src: 20-ioncube.j2
-    dest: "/etc/php5/cli/conf.d/20-ioncube.ini"
+    dest: "/etc/php5/cli/conf.d/10-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube
   notify:
-    - restart nginx
+    - restart nginx 
