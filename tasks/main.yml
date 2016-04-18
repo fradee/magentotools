@@ -36,7 +36,7 @@
   become: yes
   unarchive: src=/tmp/ioncube_loaders_lin_x86-64.tar.gz dest=/usr/local/bin copy=no
   when: magentotools_install_ioncube
-
+  
 - name: Set up IonCube in php5-fpm
   template:
     src: 20-ioncube.j2
@@ -52,4 +52,4 @@
     mode: 0775
   when: magentotools_install_ioncube
   notify:
-    - restart nginx 
+    - restart nginx
