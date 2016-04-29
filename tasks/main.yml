@@ -39,16 +39,16 @@
   
 - name: Set up IonCube in php5-fpm
   template:
-    src: 20-ioncube.j2
-    dest: "/etc/php5/fpm/conf.d/10-ioncube.ini"
+    src: 00-ioncube.j2
+    dest: "/etc/php5/fpm/conf.d/00-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube
   notify:
     - restart php-fpm
 - name: Set up IonCube in php5-cli
   template:
-    src: 20-ioncube.j2
-    dest: "/etc/php5/cli/conf.d/10-ioncube.ini"
+    src: 00-ioncube.j2
+    dest: "/etc/php5/cli/conf.d/00-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube
   notify:
