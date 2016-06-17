@@ -1,1 +1,6 @@
+{% if magentotools_install_ioncube_php7 %}
+zend_extension = /usr/local/bin/ioncube/ioncube_loader_lin_x86_7.0b6.so
+{% endif %}
+{% if magentotools_install_ioncube_php5 %}
 zend_extension = /usr/local/bin/ioncube/ioncube_loader_lin_5.5.so
+{% endif %}

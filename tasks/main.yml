@@ -1,14 +1,15 @@
 ---
+#magerun
 - name: Install magerun
   become: yes
   get_url: url=https://files.magerun.net/n98-magerun.phar dest=/usr/local/bin/magerun mode=0755
   when: magentotools_install_magerun
-
+#Modman
 - name: Install modman
   become: yes
   get_url: url=https://raw.githubusercontent.com/colinmollenhour/modman/master/modman dest=/usr/local/bin/modman mode=0755
   when: magentotools_install_modman
-
+#Composer
 - name: Download Composer installer
   become: yes
   get_url:
@@ -26,30 +27,59 @@
   become: yes
   shell: mv composer.phar /usr/local/bin/composer
   when: magentotools_install_composer
-
-- name: Download IonCube
+# IonCube for php5
+- name: Download IonCube for php5
   become: yes
   get_url: url=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest=/tmp mode=0755
-  when: magentotools_install_ioncube
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php5
 
-- name: Unarchive IonCube
+- name: Unarchive IonCube for php5
   become: yes
   unarchive: src=/tmp/ioncube_loaders_lin_x86-64.tar.gz dest=/usr/local/bin copy=no
-  when: magentotools_install_ioncube
-  
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php5
+
 - name: Set up IonCube in php5-fpm
   template:
     src: 00-ioncube.j2
     dest: "/etc/php5/fpm/conf.d/00-ioncube.ini"
     mode: 0775
-  when: magentotools_install_ioncube
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php5
   notify:
-    - restart php-fpm
+    - restart php5-fpm
 - name: Set up IonCube in php5-cli
   template:
     src: 00-ioncube.j2
     dest: "/etc/php5/cli/conf.d/00-ioncube.ini"
     mode: 0775
-  when: magentotools_install_ioncube
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php5
+  notify:
+    - restart nginx
+
+# IonCube for php7
+- name: Download IonCube for php7
+  become: yes
+  get_url: url=https://www.ioncube.com/php7-linux-x86-64-beta6.tgz dest=/tmp mode=0755
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php7
+
+- name: Unarchive IonCube for php7
+  become: yes
+  unarchive: src=/tmp/php7-linux-x86-64-beta6.tgz dest=/usr/local/bin/ioncube copy=no
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php7
+
+- name: Set up IonCube in php7-fpm
+  template:
+    src: 00-ioncube.j2
+    dest: "/etc/php/7.0/fpm/00-ioncube.ini"
+    mode: 0775
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php7
+  notify:
+    - restart php7-fpm
+
+- name: Set up IonCube in php7-cli
+  template:
+    src: 00-ioncube.j2
+    dest: "/etc/php/7.0/cli/conf.d/00-ioncube.ini"
+    mode: 0775
+  when: magentotools_install_ioncube and magentotools_install_ioncube_php7
   notify:
     - restart nginx
