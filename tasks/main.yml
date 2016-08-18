@@ -58,12 +58,12 @@
 # IonCube for php7
 - name: Download IonCube for php7
   become: yes
-  get_url: url=https://www.ioncube.com/php7-linux-x86-64-beta6.tgz dest=/tmp mode=0755
+  get_url: url=https://www.ioncube.com/php7-linux-x86-64-beta7.tgz dest=/tmp mode=0755
   when: magentotools_install_ioncube and magentotools_install_ioncube_php7
 
 - name: Unarchive IonCube for php7
   become: yes
-  unarchive: src=/tmp/php7-linux-x86-64-beta6.tgz dest=/usr/local/bin/ioncube copy=no
+  unarchive: src=/tmp/php7-linux-x86-64-beta7.tgz dest=/usr/local/bin/ioncube copy=no
   when: magentotools_install_ioncube and magentotools_install_ioncube_php7
 
 - name: Set up IonCube in php7-fpm
