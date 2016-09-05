@@ -53,7 +53,7 @@
     mode: 0775
   when: magentotools_install_ioncube and magentotools_install_ioncube_php5
   notify:
-    - restart php{{ magentotools_install_ioncube_php_version }}-fpm
+    - restart php5-fpm
 - name: Set up IonCube in php5-cli
   template:
     src: 00-ioncube.j2
