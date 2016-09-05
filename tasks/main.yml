@@ -1,8 +1,15 @@
 ---
+- name: Include Vars.
+  include_vars: "vars.yml"
+
+- name: Define php version for ioncube.
+  set_fact:
+    magentotools_install_ioncube_php_version: "{{ __magentotools_install_ioncube_php_version }}"
+  when: magentotools_install_ioncube_php_version is not defined
 #magerun
 - name: Install magerun
   become: yes
-  get_url: url=https://files.magerun.net/n98-magerun.phar dest=/usr/local/bin/magerun mode=0755
+  get_url: url=http://files.magerun.net/n98-magerun.phar dest=/usr/local/bin/magerun mode=0755
   when: magentotools_install_magerun
 #Modman
 - name: Install modman
@@ -27,6 +34,7 @@
   become: yes
   shell: mv composer.phar /usr/local/bin/composer
   when: magentotools_install_composer
+
 # IonCube for php5
 - name: Download IonCube for php5
   become: yes
@@ -41,15 +49,15 @@
 - name: Set up IonCube in php5-fpm
   template:
     src: 00-ioncube.j2
-    dest: "/etc/php5/fpm/conf.d/00-ioncube.ini"
+    dest: "/etc/php/{{ magentotools_install_ioncube_php_version }}/fpm/conf.d/00-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube and magentotools_install_ioncube_php5
   notify:
-    - restart php5-fpm
+    - restart php{{ magentotools_install_ioncube_php_version }}-fpm
 - name: Set up IonCube in php5-cli
   template:
     src: 00-ioncube.j2
-    dest: "/etc/php5/cli/conf.d/00-ioncube.ini"
+    dest: "/etc/php/{{ magentotools_install_ioncube_php_version }}/cli/conf.d/00-ioncube.ini"
     mode: 0775
   when: magentotools_install_ioncube and magentotools_install_ioncube_php5
   notify:

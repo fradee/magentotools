@@ -1,11 +1,7 @@
 ---
-- name: restart php-fpm
+- name: "restart php{{ magentotools_install_ioncube_php_version }}-fpm"
   service:
-    name: "php5-fpm"
-    state: restarted
-- name: restart php7-fpm
-  service:
-    name: "php7-fpm"
+    name: "php{{ magentotools_install_ioncube_php_version }}-fpm"
     state: restarted
 - name: restart nginx
   service:
