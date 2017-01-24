@@ -3,5 +3,3 @@ magentotools_install_magerun: true  # Install Magento Magerun
 magentotools_install_modman: true   #Install Magento Modman
 magentotools_install_composer: true   #Install Composer
 magentotools_install_ioncube: false   #Install IonCube
-magentotools_install_ioncube_php7: false # Set up ioncube for php7
-magentotools_install_ioncube_php5: true # Set up ioncube for php5

@@ -1,5 +1,5 @@
 ---
-- name: "restart php5-fpm"
+- name: "restart php-fpm"
   service:
     name: "php{{ magentotools_install_ioncube_php_version }}-fpm"
     state: restarted
